@@ -1,29 +1,31 @@
 {
   "schemaVersion": 1,
   "kind": "adapter",
-  "title": "Ankhorage Neptune Graph Database",
-  "summary": "Records the repository boundary reserved for an Amazon Neptune graph database adapter.",
-  "purpose": "Keep ownership of a future Neptune provider adapter separate from provider-neutral graph contracts and application code.",
+  "title": "Ankhorage Neptune Graph Persistence Adapter",
+  "summary": "Provides an Amazon Neptune Database Bolt adapter for the published @ankhorage/graph persistence port.",
+  "purpose": "Keep Amazon Neptune Database transport, IAM authentication, and persistence mapping separate from provider-neutral graph contracts and application code.",
   "domain": "graph database persistence",
   "responsibilities": [
-    "Own the repository-level boundary for an Amazon Neptune graph adapter when one is implemented."
+    "Implement the published @ankhorage/graph/persistence port through Amazon Neptune Database Bolt sessions.",
+    "Own Neptune Database IAM authentication, TLS, transaction lifecycle, and provider data mapping."
   ],
   "boundaries": [
-    "Does not currently contain a Neptune adapter, package, or deployment configuration.",
-    "Does not own provider-neutral graph contracts or generic graph algorithms."
+    "Does not support Neptune Analytics, HTTP openCypher batching, Gremlin, RDF, or SPARQL.",
+    "Does not own provider-neutral graph contracts, generic graph algorithms, or application workflows."
   ],
-  "audience": [
-    "Maintainers evaluating or implementing an Amazon Neptune persistence adapter."
-  ],
+  "audience": ["Maintainers evaluating or implementing an Amazon Neptune persistence adapter."],
   "architecture": {
-    "role": "Non-source provider-adapter repository with no runtime implementation on the current default branch.",
+    "role": "Provider adapter package with a single Neptune Database Bolt transport behind the published graph persistence port.",
     "invariants": [
-      "Future Neptune-specific code must remain at an adapter boundary behind a published provider-neutral graph port."
+      "Neptune-specific code remains at an adapter boundary behind the published provider-neutral graph port.",
+      "Every mutation batch is an explicit Bolt transaction and never a collection of independent HTTPS requests.",
+      "IAM credentials and SigV4 tokens are never logged or exposed from adapter errors."
     ]
   },
   "constraints": {
     "limitations": [
-      "The current default branch contains licensing and repository metadata only; no Neptune capability is shipped."
+      "Requires a reachable Amazon Neptune Database endpoint that supports TCP Bolt and openCypher.",
+      "Neptune Analytics is intentionally outside this package's scope."
     ]
   }
 }
