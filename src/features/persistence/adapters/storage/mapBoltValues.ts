@@ -57,7 +57,8 @@ export const matchesStorageData = (
   properties: Record<string, unknown>,
   data: StoredGraphNode['data'],
 ): boolean =>
-  stringifyCanonicalJson(encodeStorageData(data)) === stringifyCanonicalJson(properties);
+  stringifyCanonicalJson(encodeStorageData(data)) ===
+  stringifyCanonicalJson(normalizeStorageProperties(properties));
 
 /*** Compare a Bolt node with its canonical upsert form without trusting untyped driver values. */
 export const matchesBoltNode = (record: BoltRecord, node: StoredGraphNode): boolean => {
@@ -98,6 +99,13 @@ const readScalar = (value: unknown, name: string): string | number | boolean => 
   if (neo4j.isInt(value) && value.inSafeRange()) return value.toNumber();
   throw new Error(`Neptune returned a non-scalar property: ${name}.`);
 };
+/*** Normalize provider scalar properties before comparing them with canonical storage data. */
+const normalizeStorageProperties = (
+  properties: Readonly<Record<string, unknown>>,
+): Record<string, string | number | boolean> =>
+  Object.fromEntries(
+    Object.entries(properties).map(([key, property]) => [key, readScalar(property, key)]),
+  );
 /*** Validate a stored JSON document after decoding it from Neptune. */
 const parseDocument = (value: string): GraphJsonObject => {
   try {

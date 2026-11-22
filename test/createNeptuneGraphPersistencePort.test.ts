@@ -101,6 +101,12 @@ const relationship = (type: string, properties: Readonly<Record<string, unknown>
   type,
   properties,
 });
+const boltInteger = (value: number) => ({
+  high: 0,
+  inSafeRange: () => true,
+  low: value,
+  toNumber: () => value,
+});
 
 const transaction = (responses: (BoltResultFixture | Error)[]): TransactionFixture => {
   const queries: Query[] = [];
@@ -436,6 +442,86 @@ test('idempotent-mutation-count exactly replaces properties and labels without r
     }),
   ).rejects.toThrow('Neptune operation failed.');
   expect(reserved.write.rollback).toHaveBeenCalledTimes(1);
+});
+
+test('normalizes safe Bolt integers before node and edge idempotency comparisons', async () => {
+  const unchangedNode = driver([
+    result(record({ n: node(['Current'], { count: boltInteger(42) }) })),
+  ]);
+  const unchangedEdge = driver([
+    result(
+      record({
+        source: 'node-1',
+        target: 'node-2',
+        type: 'LINKS',
+        r: relationship('LINKS', { count: boltInteger(42) }),
+      }),
+    ),
+  ]);
+  const changedNode = driver([
+    result(record({ n: node(['Current'], { count: boltInteger(42) }) })),
+    result(),
+  ]);
+  const changedEdge = driver([
+    result(
+      record({
+        source: 'node-1',
+        target: 'node-2',
+        type: 'LINKS',
+        r: relationship('LINKS', { count: boltInteger(42) }),
+      }),
+    ),
+    result(),
+  ]);
+  drivers.push(unchangedNode, unchangedEdge, changedNode, changedEdge);
+  const session = await port().openAsync();
+
+  await expect(
+    session.executeAsync({
+      kind: 'mutate',
+      mutations: [{ kind: 'upsertNode', node: graphNode({ data: { properties: { count: 42 } } }) }],
+    }),
+  ).resolves.toEqual({ kind: 'mutated', mutationCount: 0 });
+  await expect(
+    session.executeAsync({
+      kind: 'mutate',
+      mutations: [
+        {
+          kind: 'upsertEdge',
+          edge: {
+            id: 'edge-1',
+            source: 'node-1',
+            target: 'node-2',
+            type: 'LINKS',
+            data: { properties: { count: 42 } },
+          },
+        },
+      ],
+    }),
+  ).resolves.toEqual({ kind: 'mutated', mutationCount: 0 });
+  await expect(
+    session.executeAsync({
+      kind: 'mutate',
+      mutations: [{ kind: 'upsertNode', node: graphNode({ data: { properties: { count: 43 } } }) }],
+    }),
+  ).resolves.toEqual({ kind: 'mutated', mutationCount: 1 });
+  await expect(
+    session.executeAsync({
+      kind: 'mutate',
+      mutations: [
+        {
+          kind: 'upsertEdge',
+          edge: {
+            id: 'edge-1',
+            source: 'node-1',
+            target: 'node-2',
+            type: 'LINKS',
+            data: { properties: { count: 43 } },
+          },
+        },
+      ],
+    }),
+  ).resolves.toEqual({ kind: 'mutated', mutationCount: 1 });
 });
 
 test('traversal-inclusion-and-order uses incoming direction and includes isolated requested roots', async () => {
