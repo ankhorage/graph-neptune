@@ -217,6 +217,127 @@ test('stable-edge-identity preserves immutable native IDs and rejects duplicate 
     }),
   ).rejects.toThrow('Neptune operation failed.');
   expect(duplicate.write.rollback).toHaveBeenCalledTimes(1);
+
+  const parallel = driver([
+    result(),
+    result(record({ r: relationship('LINKS', {}) })),
+    result(),
+    result(record({ r: relationship('LINKS', {}) })),
+  ]);
+  drivers.push(parallel);
+  await expect(
+    session.executeAsync({
+      kind: 'mutate',
+      mutations: [
+        {
+          kind: 'upsertEdge',
+          edge: {
+            id: 'edge-history-1',
+            source: 'node-1',
+            target: 'node-2',
+            type: 'LINKS',
+            data: { properties: { period: 1 } },
+          },
+        },
+        {
+          kind: 'upsertEdge',
+          edge: {
+            id: 'edge-history-2',
+            source: 'node-1',
+            target: 'node-2',
+            type: 'LINKS',
+            data: { properties: { period: 2 } },
+          },
+        },
+      ],
+    }),
+  ).resolves.toEqual({ kind: 'mutated', mutationCount: 2 });
+  expect(parallel.write.queries.map((query) => query.parameters.id)).toEqual([
+    'edge-history-1',
+    'edge-history-1',
+    'edge-history-2',
+    'edge-history-2',
+  ]);
+});
+
+test('round-trips native scalars and structured documents through the versioned portable codec', async () => {
+  const encodedDocument = '{"document":{"nested":[1,true,null]},"version":1}';
+  const stored = driver([result(), result()]);
+  const read = driver(
+    [],
+    [
+      result(
+        record({
+          n: node(['Current'], {
+            __ankh_document: encodedDocument,
+            active: true,
+            count: 2,
+            name: 'Node',
+          }),
+          id: 'node-1',
+        }),
+      ),
+    ],
+  );
+  drivers.push(stored, read);
+  const session = await port().openAsync();
+  await session.executeAsync({
+    kind: 'mutate',
+    mutations: [
+      {
+        kind: 'upsertNode',
+        node: graphNode({
+          data: {
+            properties: { active: true, count: 2, name: 'Node' },
+            document: { nested: [1, true, null] },
+          },
+        }),
+      },
+    ],
+  });
+  expect(stored.write.queries[1]?.statement).toContain('`~id`: $id');
+  expect(stored.write.queries[1]?.parameters.properties).toEqual({
+    __ankh_document: encodedDocument,
+    active: true,
+    count: 2,
+    name: 'Node',
+  });
+  await expect(session.executeAsync({ kind: 'nodes', nodeIds: ['node-1'] })).resolves.toEqual({
+    kind: 'nodes',
+    nodes: [
+      {
+        id: 'node-1',
+        labels: ['Current'],
+        data: {
+          properties: { active: true, count: 2, name: 'Node' },
+          document: { nested: [1, true, null] },
+        },
+      },
+    ],
+  });
+});
+
+test('contains provider and unsupported-document errors at the adapter boundary', async () => {
+  const providerFailure = driver([], [new Error('Authorization=secret-token')]);
+  const unsupportedDocument = driver(
+    [],
+    [
+      result(
+        record({
+          n: node(['Current'], { __ankh_document: '{"document":{},"version":2}' }),
+          id: 'node-1',
+        }),
+      ),
+    ],
+  );
+  drivers.push(providerFailure, unsupportedDocument);
+  const session = await port().openAsync();
+  await expect(session.executeAsync({ kind: 'nodes', nodeIds: ['node-1'] })).rejects.toThrow(
+    'Neptune operation failed.',
+  );
+  await expect(session.executeAsync({ kind: 'nodes', nodeIds: ['node-1'] })).rejects.toThrow(
+    'Neptune operation failed.',
+  );
 });
 
 test('atomic-rollback rolls back an ordered batch when an edge endpoint is absent', async () => {
@@ -276,7 +397,14 @@ test('node-delete-safety permits isolated and ordered edge-then-node deletes but
 test('idempotent-mutation-count exactly replaces properties and labels without removing every label', async () => {
   const replaced = driver([result(record({ n: node(['Legacy'], { removed: true }) })), result()]);
   const repeated = driver([
-    result(record({ n: node(['Current'], { name: 'Node', __ankh_document: '{"revision":1}' }) })),
+    result(
+      record({
+        n: node(['Current'], {
+          name: 'Node',
+          __ankh_document: '{"document":{"revision":1},"version":1}',
+        }),
+      }),
+    ),
   ]);
   const reserved = driver([]);
   drivers.push(replaced, repeated, reserved);

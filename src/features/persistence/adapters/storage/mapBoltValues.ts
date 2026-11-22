@@ -6,6 +6,7 @@ import type {
 import neo4j, { type Record as BoltRecord } from 'neo4j-driver';
 
 const documentKey = '__ankh_document';
+const documentCodecVersion = 1;
 const reservedStorageKeys = new Set(['~id', documentKey]);
 
 /*** Convert a validated Bolt node into a canonical stored graph node. */
@@ -42,7 +43,12 @@ export const encodeStorageData = (
     ...data.properties,
     ...(data.document === undefined
       ? {}
-      : { [documentKey]: stringifyCanonicalJson(data.document) }),
+      : {
+          [documentKey]: stringifyCanonicalJson({
+            document: data.document,
+            version: documentCodecVersion,
+          }),
+        }),
   };
 };
 
@@ -96,13 +102,29 @@ const readScalar = (value: unknown, name: string): string | number | boolean => 
 const parseDocument = (value: string): GraphJsonObject => {
   try {
     const parsed: unknown = JSON.parse(value);
-    if (parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed))
-      return parsed as GraphJsonObject;
+    if (!isDocumentEnvelope(parsed)) throw new Error('Unsupported document codec.');
+    return parsed.document;
   } catch {
     /* rejected below */
   }
   throw new Error('Neptune returned an invalid graph document.');
 };
+
+/*** Recognize the one portable structured-document codec accepted by this adapter. */
+const isDocumentEnvelope = (
+  value: unknown,
+): value is { readonly document: GraphJsonObject; readonly version: typeof documentCodecVersion } =>
+  value !== null &&
+  typeof value === 'object' &&
+  !Array.isArray(value) &&
+  'version' in value &&
+  'document' in value &&
+  value.version === documentCodecVersion &&
+  isGraphJsonObject(value.document);
+
+/*** Verify that a decoded portable document remains a JSON object. */
+const isGraphJsonObject = (value: unknown): value is GraphJsonObject =>
+  value !== null && typeof value === 'object' && !Array.isArray(value);
 /*** Copy driver labels only after asserting their portable string form. */
 const toLabels = (labels: readonly string[]): readonly [string, ...string[]] => {
   const values = labels.map((label) => readString(label, 'node label'));
