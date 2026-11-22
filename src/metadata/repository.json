@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "kind": "adapter",
+  "title": "Ankhorage Neptune Graph Persistence Adapter",
+  "summary": "Provides an Amazon Neptune Database Bolt adapter for the published @ankhorage/graph persistence port.",
+  "purpose": "Keep Amazon Neptune Database transport, IAM authentication, and persistence mapping separate from provider-neutral graph contracts and application code.",
+  "domain": "graph database persistence",
+  "responsibilities": [
+    "Implement the published @ankhorage/graph/persistence port through Amazon Neptune Database Bolt sessions.",
+    "Own Neptune Database IAM authentication, TLS, transaction lifecycle, and provider data mapping."
+  ],
+  "boundaries": [
+    "Does not support Neptune Analytics, HTTP openCypher batching, Gremlin, RDF, or SPARQL.",
+    "Does not own provider-neutral graph contracts, generic graph algorithms, or application workflows."
+  ],
+  "audience": ["Maintainers evaluating or implementing an Amazon Neptune persistence adapter."],
+  "architecture": {
+    "role": "Provider adapter package with a single Neptune Database Bolt transport behind the published graph persistence port.",
+    "invariants": [
+      "Neptune-specific code remains at an adapter boundary behind the published provider-neutral graph port.",
+      "Every mutation batch is an explicit Bolt transaction and never a collection of independent HTTPS requests.",
+      "IAM credentials and SigV4 tokens are never logged or exposed from adapter errors."
+    ]
+  },
+  "constraints": {
+    "limitations": [
+      "Requires a reachable Amazon Neptune Database endpoint that supports TCP Bolt and openCypher.",
+      "Neptune Analytics is intentionally outside this package's scope."
+    ]
+  }
+}

@@ -1,0 +1,94 @@
+[
+  {
+    "name": "createNeptuneGraphPersistencePort",
+    "description": "Create a TLS Neptune Database Bolt persistence port using native custom identities.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+    "sourceLocation": {
+      "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+      "line": 33,
+      "column": 14
+    },
+    "exportPaths": [
+      "src/neptune.ts"
+    ],
+    "relatedSymbols": [
+      "NeptuneGraphPersistenceOptions"
+    ],
+    "signatures": [
+      {
+        "label": "(options: NeptuneGraphPersistenceOptions) => GraphPersistencePort",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "NeptuneGraphPersistenceOptions",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "GraphPersistencePort",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "NeptuneGraphPersistenceOptions",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/types/neptune.ts",
+    "sourceLocation": {
+      "filePath": "src/types/neptune.ts",
+      "line": 8,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/neptune.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "connectionTimeoutMs",
+        "kind": "property",
+        "type": "number",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "credentialProvider",
+        "kind": "property",
+        "type": "NeptuneCredentialProvider",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "endpoint",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "iamAuthentication",
+        "kind": "property",
+        "type": "boolean",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "region",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  }
+]
