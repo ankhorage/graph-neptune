@@ -8,7 +8,7 @@
     "modulePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
     "sourceLocation": {
       "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
-      "line": 33,
+      "line": 30,
       "column": 14
     },
     "exportPaths": [
@@ -37,14 +37,14 @@
   },
   {
     "name": "NeptuneGraphPersistenceOptions",
-    "description": null,
+    "description": "Configuration for one Amazon Neptune Database Bolt endpoint. Native custom IDs require Neptune\nDatabase engine 1.2.0.2 or later. Bolt protocol negotiation is provider-controlled and requires\nan authorized live endpoint for compatibility verification.\n\n@see https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-opencypher-extensions.html\n@see https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-opencypher-bolt.html",
     "isReadme": false,
     "examples": [],
     "kind": "type",
     "modulePath": "src/types/neptune.ts",
     "sourceLocation": {
       "filePath": "src/types/neptune.ts",
-      "line": 8,
+      "line": 15,
       "column": 1
     },
     "exportPaths": [
