@@ -8,10 +8,6 @@ import type {
   StoredGraphNode,
 } from '@ankhorage/graph/persistence';
 import { assertGraphPersistenceOperation } from '@ankhorage/graph/persistence';
-import { Sha256 } from '@aws-crypto/sha256-js';
-import { defaultProvider } from '@aws-sdk/credential-provider-node';
-import { HttpRequest } from '@smithy/protocol-http';
-import { SignatureV4 } from '@smithy/signature-v4';
 import neo4j, { type Driver, type ManagedTransaction, type Transaction } from 'neo4j-driver';
 
 import type { NeptuneGraphPersistenceOptions } from '../../../types/neptune.js';
@@ -26,6 +22,7 @@ import {
   matchesStorageData,
 } from '../adapters/storage/mapBoltValues.js';
 import { readBoltNumber } from '../adapters/storage/readBoltNumber.js';
+import { createNeptuneBoltDriverAsync } from '../adapters/transport/createNeptuneBoltDriverAsync.js';
 import { parseNeptuneEndpoint } from '../adapters/transport/parseNeptuneEndpoint.js';
 const nativeIdentifier = '`~id`';
 const traversalCursor = createTraversalCursor();
@@ -33,73 +30,42 @@ const traversalCursor = createTraversalCursor();
 export const createNeptuneGraphPersistencePort = (
   options: NeptuneGraphPersistenceOptions,
 ): GraphPersistencePort => ({ openAsync: async () => await openNeptuneSessionAsync(options) });
-/*** Open a new driver for each port session so fresh IAM credentials are signed on renewal. */
-const openNeptuneSessionAsync = async (
+/*** Prepare a Neptune session that signs a fresh IAM credential for each operation. */
+const openNeptuneSessionAsync = (
   options: NeptuneGraphPersistenceOptions,
 ): Promise<GraphPersistenceSession> => {
   try {
     const endpoint = parseNeptuneEndpoint(options.endpoint);
-    const auth =
-      options.iamAuthentication === false
-        ? neo4j.auth.basic('username', '')
-        : await createIamAuthAsync(options, endpoint);
-    return createSession(
-      neo4j.driver(`bolt://${endpoint.host}:${endpoint.port}`, auth, {
-        encrypted: 'ENCRYPTION_ON',
-        trust: 'TRUST_SYSTEM_CA_SIGNED_CERTIFICATES',
-        maxConnectionPoolSize: 1,
-        ...(options.connectionTimeoutMs === undefined
-          ? {}
-          : { connectionTimeout: options.connectionTimeoutMs }),
+    return Promise.resolve(
+      createSession(async () => {
+        return await createNeptuneBoltDriverAsync(options, endpoint);
       }),
     );
   } catch (error) {
-    throw redactNeptuneError(error);
+    return Promise.reject(redactNeptuneError(error));
   }
 };
-/*** Sign the documented Neptune Database Bolt IAM request without retaining credential material. */
-const createIamAuthAsync = async (
-  options: NeptuneGraphPersistenceOptions,
-  endpoint: ReturnType<typeof parseNeptuneEndpoint>,
-): Promise<neo4j.AuthToken> => {
-  const request = new HttpRequest({
-    method: 'GET',
-    protocol: 'bolt:',
-    hostname: endpoint.host,
-    port: endpoint.port,
-    path: '/opencypher',
-    headers: { host: `${endpoint.host}:${endpoint.port}` },
-  });
-  const signed = await new SignatureV4({
-    credentials: options.credentialProvider ?? defaultProvider(),
-    region: options.region,
-    service: 'neptune-db',
-    sha256: Sha256,
-  }).sign(request, { unsignableHeaders: new Set(['x-amz-content-sha256']) });
-  return neo4j.auth.basic(
-    'username',
-    JSON.stringify({
-      Authorization: signed.headers.authorization,
-      HttpMethod: signed.method,
-      'X-Amz-Date': signed.headers['x-amz-date'],
-      Host: signed.headers.host,
-      'X-Amz-Security-Token': signed.headers['x-amz-security-token'],
-    }),
-  );
-};
-
-/*** Bind the public Graph session lifecycle to one Bolt driver. */
-const createSession = (driver: Driver): GraphPersistenceSession => ({
+/*** Bind a Graph session to a fresh IAM-signed Bolt driver for each operation. */
+const createSession = (openDriverAsync: () => Promise<Driver>): GraphPersistenceSession => ({
   capabilities: ['mutate', 'nodes', 'traverse'],
-  executeAsync: async (operation) => await executeAsync(driver, operation),
-  closeAsync: async () => await closeAsync(driver),
+  executeAsync: async (operation) =>
+    await withDriverAsync(openDriverAsync, async (driver) => await executeAsync(driver, operation)),
+  closeAsync: () => Promise.resolve(),
 });
-/*** Close the provider connection without exposing provider failures. */
-const closeAsync = async (driver: Driver): Promise<void> => {
+
+/*** Open, use, and close one short-lived driver so IAM tokens cannot become stale in a session. */
+const withDriverAsync = async <Result>(
+  openDriverAsync: () => Promise<Driver>,
+  work: (driver: Driver) => Promise<Result>,
+): Promise<Result> => {
+  let driver: Driver | undefined;
   try {
-    await driver.close();
+    driver = await openDriverAsync();
+    return await work(driver);
   } catch (error) {
     throw redactNeptuneError(error);
+  } finally {
+    await driver?.close().catch(() => undefined);
   }
 };
 
@@ -153,7 +119,7 @@ const mutateOneAsync = async (
   if (mutation.kind === 'deleteEdge')
     return await deleteByIdAsync(transaction, 'relationship', mutation.edgeId);
   const attached = await transaction.run(
-    `MATCH (n)-[r]-() WHERE n.${nativeIdentifier} = $nodeId AND NOT r.${nativeIdentifier} IN $deletedEdgeIds RETURN count(r) AS count`,
+    `OPTIONAL MATCH (n) WHERE n.${nativeIdentifier} = $nodeId OPTIONAL MATCH (n)-[r]-() WHERE NOT r.${nativeIdentifier} IN $deletedEdgeIds RETURN count(r) AS count`,
     { nodeId: mutation.nodeId, deletedEdgeIds },
   );
   if (readBoltNumber(attached.records[0]?.get('count')) > 0)
@@ -184,9 +150,18 @@ const upsertNodeAsync = async (
   }
   const current: unknown = record.get('n');
   if (!neo4j.isNode(current)) throw new Error('Neptune returned an invalid graph node.');
-  const removeLabels = current.labels.map(escapeCypherIdentifier).join(':');
+  const currentLabels = new Set(current.labels);
+  const targetLabels = new Set(node.labels);
+  const labelsToAdd = node.labels
+    .filter((label) => !currentLabels.has(label))
+    .map(escapeCypherIdentifier)
+    .join(':');
+  const labelsToRemove = current.labels
+    .filter((label) => !targetLabels.has(label))
+    .map(escapeCypherIdentifier)
+    .join(':');
   await transaction.run(
-    `MATCH (n) WHERE n.${nativeIdentifier} = $id${removeLabels === '' ? '' : ` REMOVE n:${removeLabels}`} SET n = $properties SET n:${labels}`,
+    `MATCH (n) WHERE n.${nativeIdentifier} = $id${labelsToAdd === '' ? '' : ` SET n:${labelsToAdd}`} SET n = $properties${labelsToRemove === '' ? '' : ` REMOVE n:${labelsToRemove}`}`,
     { id: node.id, properties: encodeStorageData(node.data) },
   );
   return true;
@@ -301,6 +276,7 @@ const traverseAsync = async (
     );
     const edges = result.records.slice(0, operation.pageSize).map(mapBoltEdge);
     const nodes = await readNodesAsync(transaction, [
+      ...operation.startNodeIds,
       ...new Set(edges.flatMap((edge) => [edge.source, edge.target])),
     ]);
     return {

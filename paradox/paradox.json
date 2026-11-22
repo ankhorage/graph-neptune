@@ -1,0 +1,1166 @@
+{
+  "packageName": "@ankhorage/graph-neptune",
+  "packageId": "@ankhorage/graph-neptune",
+  "description": "Amazon Neptune Database Bolt persistence adapter for @ankhorage/graph.",
+  "collaborators": null,
+  "donation": null,
+  "badges": [
+    {
+      "id": "license",
+      "label": "license",
+      "value": "MIT",
+      "color": "2563eb"
+    },
+    {
+      "id": "npm",
+      "label": "npm",
+      "value": "v0.1.0",
+      "color": "cb3837"
+    },
+    {
+      "id": "runtime",
+      "label": "runtime",
+      "value": "bun",
+      "color": "f59e0b"
+    },
+    {
+      "id": "typescript",
+      "label": "typescript",
+      "value": "strict",
+      "color": "2563eb"
+    },
+    {
+      "id": "eslint",
+      "label": "eslint",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "prettier",
+      "label": "prettier",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "build",
+      "label": "build",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "tests",
+      "label": "tests",
+      "value": "configured",
+      "color": "6f42c1"
+    },
+    {
+      "id": "docs",
+      "label": "docs",
+      "value": "paradox",
+      "color": "0f766e"
+    }
+  ],
+  "usage": null,
+  "readmeUsageDescription": null,
+  "readmeUsage": [],
+  "readmeCli": null,
+  "readmeConfig": null,
+  "config": null,
+  "entrypoints": [
+    "src/neptune.ts"
+  ],
+  "modules": [
+    {
+      "path": "src/features/persistence/adapters/storage/createTraversalCursor.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createTraversalCursor"
+      ]
+    },
+    {
+      "path": "src/features/persistence/adapters/storage/createTraversalPattern.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createTraversalPattern"
+      ]
+    },
+    {
+      "path": "src/features/persistence/adapters/storage/escapeCypherIdentifier.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "escapeCypherIdentifier"
+      ]
+    },
+    {
+      "path": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "encodeStorageData",
+        "mapBoltEdge",
+        "mapBoltNode",
+        "matchesBoltNode",
+        "matchesStorageData"
+      ]
+    },
+    {
+      "path": "src/features/persistence/adapters/storage/readBoltNumber.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "readBoltNumber"
+      ]
+    },
+    {
+      "path": "src/features/persistence/adapters/transport/parseNeptuneEndpoint.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "parseNeptuneEndpoint"
+      ]
+    },
+    {
+      "path": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
+      "path": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/persistence/adapters/storage/createTraversalCursor.ts",
+        "src/features/persistence/adapters/storage/createTraversalPattern.ts",
+        "src/features/persistence/adapters/storage/escapeCypherIdentifier.ts",
+        "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "src/features/persistence/adapters/storage/readBoltNumber.ts",
+        "src/features/persistence/adapters/transport/parseNeptuneEndpoint.ts",
+        "src/types/neptune.ts"
+      ],
+      "exports": [
+        "createNeptuneGraphPersistencePort"
+      ]
+    },
+    {
+      "path": "src/neptune.ts",
+      "isEntrypoint": true,
+      "dependencies": [],
+      "exports": [
+        "createNeptuneGraphPersistencePort",
+        "NeptuneGraphPersistenceOptions"
+      ]
+    },
+    {
+      "path": "src/types/neptune.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "NeptuneGraphPersistenceOptions"
+      ]
+    }
+  ],
+  "exports": [
+    {
+      "name": "createNeptuneGraphPersistencePort",
+      "description": "Create a TLS Neptune Database Bolt persistence port using native custom identities.",
+      "isReadme": false,
+      "examples": [],
+      "kind": "value",
+      "modulePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 33,
+        "column": 14
+      },
+      "exportPaths": [
+        "src/neptune.ts"
+      ],
+      "relatedSymbols": [
+        "NeptuneGraphPersistenceOptions"
+      ],
+      "signatures": [
+        {
+          "label": "(options: NeptuneGraphPersistenceOptions) => GraphPersistencePort",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "NeptuneGraphPersistenceOptions",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "GraphPersistencePort",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "NeptuneGraphPersistenceOptions",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/types/neptune.ts",
+      "sourceLocation": {
+        "filePath": "src/types/neptune.ts",
+        "line": 8,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/neptune.ts"
+      ],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "connectionTimeoutMs",
+          "kind": "property",
+          "type": "number",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "credentialProvider",
+          "kind": "property",
+          "type": "NeptuneCredentialProvider",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "endpoint",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "iamAuthentication",
+          "kind": "property",
+          "type": "boolean",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "region",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    }
+  ],
+  "components": [],
+  "sourceFunctions": [
+    {
+      "name": "createTraversalCursor",
+      "description": "Create query-scope-bound opaque traversal cursor operations.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/createTraversalCursor.ts",
+        "line": 6,
+        "column": 14
+      }
+    },
+    {
+      "name": "encode",
+      "description": "Encode an offset with all inputs that define the complete traversal result scope.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/createTraversalCursor.ts",
+        "line": 12,
+        "column": 7
+      }
+    },
+    {
+      "name": "decode",
+      "description": "Decode only cursors that continue the exact same semantic query.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/createTraversalCursor.ts",
+        "line": 16,
+        "column": 7
+      }
+    },
+    {
+      "name": "traversalScope",
+      "description": "Canonicalize set-like inputs before cursor scope comparison.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/createTraversalCursor.ts",
+        "line": 35,
+        "column": 7
+      }
+    },
+    {
+      "name": "failCursor",
+      "description": "Reject malformed and cross-query continuations.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/createTraversalCursor.ts",
+        "line": 44,
+        "column": 7
+      }
+    },
+    {
+      "name": "createTraversalPattern",
+      "description": "Create the directed Cypher path pattern for a validated Graph traversal.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/createTraversalPattern.ts",
+        "line": 2,
+        "column": 14
+      }
+    },
+    {
+      "name": "escapeCypherIdentifier",
+      "description": "Escape a dynamic Cypher label or relationship type as an identifier.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/escapeCypherIdentifier.ts",
+        "line": 2,
+        "column": 14
+      }
+    },
+    {
+      "name": "mapBoltNode",
+      "description": "Convert a validated Bolt node into a canonical stored graph node.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 12,
+        "column": 14
+      }
+    },
+    {
+      "name": "mapBoltEdge",
+      "description": "Convert a validated Bolt relationship and endpoint projection into a canonical graph edge.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 23,
+        "column": 14
+      }
+    },
+    {
+      "name": "encodeStorageData",
+      "description": "Encode only lossless documents while leaving scalar graph properties native and filterable.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 37,
+        "column": 14
+      }
+    },
+    {
+      "name": "matchesStorageData",
+      "description": "Compare a provider property map with canonical storage data after removing provider metadata.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 50,
+        "column": 14
+      }
+    },
+    {
+      "name": "matchesBoltNode",
+      "description": "Compare a Bolt node with its canonical upsert form without trusting untyped driver values.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 57,
+        "column": 14
+      }
+    },
+    {
+      "name": "decodeData",
+      "description": "Decode provider data and prevent reserved persistence metadata from entering public properties.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 68,
+        "column": 7
+      }
+    },
+    {
+      "name": "readString",
+      "description": "Narrow a provider value to a non-empty string.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 79,
+        "column": 7
+      }
+    },
+    {
+      "name": "readScalar",
+      "description": "Restrict public properties to the scalar storage contract.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 85,
+        "column": 7
+      }
+    },
+    {
+      "name": "parseDocument",
+      "description": "Validate a stored JSON document after decoding it from Neptune.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 96,
+        "column": 7
+      }
+    },
+    {
+      "name": "toLabels",
+      "description": "Copy driver labels only after asserting their portable string form.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 107,
+        "column": 7
+      }
+    },
+    {
+      "name": "assertStoragePropertyKeys",
+      "description": "Reject user data that could overwrite Neptune's native identity or adapter document field.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 116,
+        "column": 7
+      }
+    },
+    {
+      "name": "stringifyCanonicalJson",
+      "description": "Serialize JSON-like values with sorted object keys for stable exact-upsert comparisons.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 123,
+        "column": 7
+      }
+    },
+    {
+      "name": "sortJson",
+      "description": "Recursively sort object keys without changing arrays or scalar values.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "line": 126,
+        "column": 7
+      }
+    },
+    {
+      "name": "readBoltNumber",
+      "description": "Normalize a safe provider numeric value and reject malformed aggregate results.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/storage/readBoltNumber.ts",
+        "line": 4,
+        "column": 14
+      }
+    },
+    {
+      "name": "parseNeptuneEndpoint",
+      "description": "Validate a Neptune Database Bolt endpoint before it reaches the driver.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/adapters/transport/parseNeptuneEndpoint.ts",
+        "line": 2,
+        "column": 14
+      }
+    },
+    {
+      "name": "result",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "line": 84,
+        "column": 7
+      }
+    },
+    {
+      "name": "record",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "line": 85,
+        "column": 7
+      }
+    },
+    {
+      "name": "node",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "line": 88,
+        "column": 7
+      }
+    },
+    {
+      "name": "relationship",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "line": 92,
+        "column": 7
+      }
+    },
+    {
+      "name": "transaction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "line": 97,
+        "column": 7
+      }
+    },
+    {
+      "name": "driver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "line": 112,
+        "column": 7
+      }
+    },
+    {
+      "name": "port",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "line": 134,
+        "column": 7
+      }
+    },
+    {
+      "name": "graphNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "line": 141,
+        "column": 7
+      }
+    },
+    {
+      "name": "createNeptuneGraphPersistencePort",
+      "description": "Create a TLS Neptune Database Bolt persistence port using native custom identities.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 33,
+        "column": 14
+      }
+    },
+    {
+      "name": "openNeptuneSessionAsync",
+      "description": "Prepare a Neptune session that signs a fresh IAM credential for each operation.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 37,
+        "column": 7
+      }
+    },
+    {
+      "name": "createIamAuthAsync",
+      "description": "Sign the documented Neptune Database Bolt IAM request without retaining credential material.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 61,
+        "column": 7
+      }
+    },
+    {
+      "name": "createSession",
+      "description": "Bind a Graph session to a fresh IAM-signed Bolt driver for each operation.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 92,
+        "column": 7
+      }
+    },
+    {
+      "name": "withDriverAsync",
+      "description": "Open, use, and close one short-lived driver so IAM tokens cannot become stale in a session.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 100,
+        "column": 7
+      }
+    },
+    {
+      "name": "executeAsync",
+      "description": "Validate and dispatch a canonical Graph persistence operation.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 116,
+        "column": 7
+      }
+    },
+    {
+      "name": "mutateAsync",
+      "description": "Commit every ordered mutation or roll back the whole batch.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 131,
+        "column": 7
+      }
+    },
+    {
+      "name": "mutateOneAsync",
+      "description": "Apply one mutation while protecting ordered delete and identity invariants.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 155,
+        "column": 7
+      }
+    },
+    {
+      "name": "upsertNodeAsync",
+      "description": "Upsert a node through Neptune's globally unique native custom ID.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 174,
+        "column": 7
+      }
+    },
+    {
+      "name": "upsertEdgeAsync",
+      "description": "Upsert one parallel-safe historical edge without allowing endpoint or type rewrites.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 214,
+        "column": 7
+      }
+    },
+    {
+      "name": "deleteByIdAsync",
+      "description": "Delete an element identified by its native custom ID.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 257,
+        "column": 7
+      }
+    },
+    {
+      "name": "withReadAsync",
+      "description": "Execute read work with deterministic provider-error and lifecycle handling.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 270,
+        "column": 7
+      }
+    },
+    {
+      "name": "readNodesAsync",
+      "description": "Load graph nodes by native custom ID in stable order.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 285,
+        "column": 7
+      }
+    },
+    {
+      "name": "traverseAsync",
+      "description": "Return a live, stable-ID-ordered traversal page including all returned-edge endpoints.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 298,
+        "column": 7
+      }
+    },
+    {
+      "name": "redactNeptuneError",
+      "description": "Replace any provider exception with a fixed credential-safe public error.",
+      "sourceLocation": {
+        "filePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "line": 337,
+        "column": 7
+      }
+    }
+  ],
+  "sequenceScenarios": [
+    {
+      "kind": "export",
+      "name": "createNeptuneGraphPersistencePort",
+      "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+      "symbolName": "createNeptuneGraphPersistencePort",
+      "description": "Create a TLS Neptune Database Bolt persistence port using native custom identities.",
+      "isReadme": false
+    }
+  ],
+  "graphs": {
+    "imports": [
+      {
+        "fromPath": "src/neptune.ts",
+        "toPath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "sourcePath": "src/neptune.ts"
+      },
+      {
+        "fromPath": "src/neptune.ts",
+        "toPath": "src/types/neptune.ts",
+        "sourcePath": "src/neptune.ts"
+      },
+      {
+        "fromPath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toPath": "src/types/neptune.ts",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromPath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toPath": "src/features/persistence/adapters/storage/createTraversalCursor.ts",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromPath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toPath": "src/features/persistence/adapters/storage/createTraversalPattern.ts",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromPath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toPath": "src/features/persistence/adapters/storage/escapeCypherIdentifier.ts",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromPath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toPath": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromPath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toPath": "src/features/persistence/adapters/storage/readBoltNumber.ts",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromPath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toPath": "src/features/persistence/adapters/transport/parseNeptuneEndpoint.ts",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      }
+    ],
+    "calls": [
+      {
+        "fromSymbol": "transaction",
+        "toSymbol": "mock",
+        "callExpression": "mock",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "toSymbol": "result",
+        "callExpression": "result",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "driver",
+        "toSymbol": "transaction",
+        "callExpression": "transaction",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "driver",
+        "toSymbol": "mock",
+        "callExpression": "mock",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "toSymbol": "mock",
+        "callExpression": "mock",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "executeRead",
+        "toSymbol": "work",
+        "callExpression": "work",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "port",
+        "toSymbol": "createNeptuneGraphPersistencePort",
+        "callExpression": "createNeptuneGraphPersistencePort",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "toSymbol": "beforeEach",
+        "callExpression": "beforeEach",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "toSymbol": "driver",
+        "callExpression": "driver",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "toSymbol": "record",
+        "callExpression": "record",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "toSymbol": "relationship",
+        "callExpression": "relationship",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "toSymbol": "port",
+        "callExpression": "port",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "toSymbol": "graphNode",
+        "callExpression": "graphNode",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts",
+        "toSymbol": "node",
+        "callExpression": "node",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.test.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toSymbol": "createTraversalCursor",
+        "callExpression": "createTraversalCursor",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "openAsync",
+        "toSymbol": "openNeptuneSessionAsync",
+        "callExpression": "openNeptuneSessionAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "openNeptuneSessionAsync",
+        "toSymbol": "parseNeptuneEndpoint",
+        "callExpression": "parseNeptuneEndpoint",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "openNeptuneSessionAsync",
+        "toSymbol": "createSession",
+        "callExpression": "createSession",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toSymbol": "createIamAuthAsync",
+        "callExpression": "createIamAuthAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "openNeptuneSessionAsync",
+        "toSymbol": "redactNeptuneError",
+        "callExpression": "redactNeptuneError",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "createIamAuthAsync",
+        "toSymbol": "defaultProvider",
+        "callExpression": "defaultProvider",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "executeAsync",
+        "toSymbol": "withDriverAsync",
+        "callExpression": "withDriverAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toSymbol": "executeAsync",
+        "callExpression": "executeAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "withDriverAsync",
+        "toSymbol": "openDriverAsync",
+        "callExpression": "openDriverAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "withDriverAsync",
+        "toSymbol": "work",
+        "callExpression": "work",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "withDriverAsync",
+        "toSymbol": "redactNeptuneError",
+        "callExpression": "redactNeptuneError",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "executeAsync",
+        "toSymbol": "assertGraphPersistenceOperation",
+        "callExpression": "assertGraphPersistenceOperation",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "executeAsync",
+        "toSymbol": "mutateAsync",
+        "callExpression": "mutateAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "executeAsync",
+        "toSymbol": "withReadAsync",
+        "callExpression": "withReadAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toSymbol": "readNodesAsync",
+        "callExpression": "readNodesAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "executeAsync",
+        "toSymbol": "traverseAsync",
+        "callExpression": "traverseAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "mutateAsync",
+        "toSymbol": "mutateOneAsync",
+        "callExpression": "mutateOneAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "mutateAsync",
+        "toSymbol": "redactNeptuneError",
+        "callExpression": "redactNeptuneError",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "mutateOneAsync",
+        "toSymbol": "upsertNodeAsync",
+        "callExpression": "upsertNodeAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "mutateOneAsync",
+        "toSymbol": "upsertEdgeAsync",
+        "callExpression": "upsertEdgeAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "mutateOneAsync",
+        "toSymbol": "deleteByIdAsync",
+        "callExpression": "deleteByIdAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "mutateOneAsync",
+        "toSymbol": "readBoltNumber",
+        "callExpression": "readBoltNumber",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "upsertNodeAsync",
+        "toSymbol": "matchesBoltNode",
+        "callExpression": "matchesBoltNode",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "upsertNodeAsync",
+        "toSymbol": "encodeStorageData",
+        "callExpression": "encodeStorageData",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "upsertEdgeAsync",
+        "toSymbol": "matchesStorageData",
+        "callExpression": "matchesStorageData",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "upsertEdgeAsync",
+        "toSymbol": "encodeStorageData",
+        "callExpression": "encodeStorageData",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "upsertEdgeAsync",
+        "toSymbol": "escapeCypherIdentifier",
+        "callExpression": "escapeCypherIdentifier",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "deleteByIdAsync",
+        "toSymbol": "readBoltNumber",
+        "callExpression": "readBoltNumber",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "withReadAsync",
+        "toSymbol": "redactNeptuneError",
+        "callExpression": "redactNeptuneError",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "traverseAsync",
+        "toSymbol": "withReadAsync",
+        "callExpression": "withReadAsync",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toSymbol": "decode",
+        "callExpression": "traversalCursor.decode",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toSymbol": "createTraversalPattern",
+        "callExpression": "createTraversalPattern",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts",
+        "toSymbol": "encode",
+        "callExpression": "traversalCursor.encode",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "encode",
+        "toSymbol": "traversalScope",
+        "callExpression": "traversalScope",
+        "sourcePath": "src/features/persistence/adapters/storage/createTraversalCursor.ts"
+      },
+      {
+        "fromSymbol": "decode",
+        "toSymbol": "traversalScope",
+        "callExpression": "traversalScope",
+        "sourcePath": "src/features/persistence/adapters/storage/createTraversalCursor.ts"
+      },
+      {
+        "fromSymbol": "decode",
+        "toSymbol": "failCursor",
+        "callExpression": "failCursor",
+        "sourcePath": "src/features/persistence/adapters/storage/createTraversalCursor.ts"
+      },
+      {
+        "fromSymbol": "mapBoltNode",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "mapBoltNode",
+        "toSymbol": "toLabels",
+        "callExpression": "toLabels",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "mapBoltNode",
+        "toSymbol": "decodeData",
+        "callExpression": "decodeData",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "mapBoltEdge",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "mapBoltEdge",
+        "toSymbol": "decodeData",
+        "callExpression": "decodeData",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "encodeStorageData",
+        "toSymbol": "assertStoragePropertyKeys",
+        "callExpression": "assertStoragePropertyKeys",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "encodeStorageData",
+        "toSymbol": "stringifyCanonicalJson",
+        "callExpression": "stringifyCanonicalJson",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "matchesStorageData",
+        "toSymbol": "stringifyCanonicalJson",
+        "callExpression": "stringifyCanonicalJson",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "matchesStorageData",
+        "toSymbol": "encodeStorageData",
+        "callExpression": "encodeStorageData",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "matchesBoltNode",
+        "toSymbol": "toLabels",
+        "callExpression": "toLabels",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "toSymbol": "toLabels",
+        "callExpression": "toLabels",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "matchesBoltNode",
+        "toSymbol": "matchesStorageData",
+        "callExpression": "matchesStorageData",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "toSymbol": "readScalar",
+        "callExpression": "readScalar",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "decodeData",
+        "toSymbol": "parseDocument",
+        "callExpression": "parseDocument",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "stringifyCanonicalJson",
+        "toSymbol": "sortJson",
+        "callExpression": "sortJson",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      },
+      {
+        "fromSymbol": "src/features/persistence/adapters/storage/mapBoltValues.ts",
+        "toSymbol": "sortJson",
+        "callExpression": "sortJson",
+        "sourcePath": "src/features/persistence/adapters/storage/mapBoltValues.ts"
+      }
+    ],
+    "typeReferences": [
+      {
+        "fromSymbol": "createNeptuneGraphPersistencePort",
+        "toType": "GraphPersistencePort",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "createNeptuneGraphPersistencePort",
+        "toType": "NeptuneGraphPersistenceOptions",
+        "sourcePath": "src/features/persistence/composition/createNeptuneGraphPersistencePort.ts"
+      },
+      {
+        "fromSymbol": "NeptuneGraphPersistenceOptions",
+        "toType": "NeptuneCredentialProvider",
+        "sourcePath": "src/types/neptune.ts"
+      }
+    ],
+    "componentComposition": []
+  }
+}
